@@ -41,9 +41,9 @@ const AuthButton = () => {
 const SideNavbar = (props: Props) => {
   return (
     <div className="flex flex-col justify-between max-w-[200px] border-r border-r-gray-300 h-screen box-border p-4">
-      <div>
-        <Link href={ROOT}>Protected</Link>
-        <Link href={PROTECTED}>Protected</Link>
+      <div className="flex flex-col space-y-4">
+        <Link href={ROOT} className="font-medium text-xl">ShowerThoughts</Link>
+        <Link href={PROTECTED} className="hover:underline">Protected</Link>
       </div>
       <AuthButton />
     </div>
