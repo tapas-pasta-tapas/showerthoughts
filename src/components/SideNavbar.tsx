@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { ROOT, PROTECTED } from "../../lib/routes";
+import { ROOT, PROTECTED } from "../lib/routes";
 import {
   Bell,
   CircleUser,
@@ -18,17 +18,17 @@ import {
   BookIcon,
   Book,
   Calendar,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 
 import {
   DropdownMenu,
@@ -37,9 +37,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 type Props = {};
 
 const AuthButton = () => {
