@@ -21,7 +21,7 @@ export default function Dashboard() {
             <p className="text-sm text-muted-foreground">
               Create a journal entry now!.
             </p>
-            
+
             <Link href="/entry">
               <Button className="mt-4">Add Entry</Button>
             </Link>

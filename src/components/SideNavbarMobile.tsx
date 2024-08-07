@@ -32,17 +32,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-
 const SideNavbarMobile = () => {
   return (
     <div>
       <Sheet>
         <SheetTrigger asChild>
-          <Button
-            variant="outline"
-            size="icon"
-            className="shrink-0 md:hidden"
-          >
+          <Button variant="outline" size="icon" className="shrink-0 md:hidden">
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
@@ -114,7 +109,7 @@ const SideNavbarMobile = () => {
         </SheetContent>
       </Sheet>
     </div>
-  )
-}
+  );
+};
 
-export default SideNavbarMobile
+export default SideNavbarMobile;
