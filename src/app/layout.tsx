@@ -6,6 +6,8 @@ import { getServerSession } from "next-auth";
 import SessionProvider from "../components/providers/SessionProvider";
 import SideNavbar from "../components/SideNavbar";
 import { authOptions } from "./api/auth/[...nextauth]/route";
+import SideNavbarMobile from "@/components/SideNavbarMobile";
+import Header from "@/components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
