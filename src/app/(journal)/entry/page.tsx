@@ -57,9 +57,7 @@ const JournalPage = () => {
       console.error("Failed to save the entry:", error);
     }
   }
-
-
-
+  
   return (
     <div className="min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
