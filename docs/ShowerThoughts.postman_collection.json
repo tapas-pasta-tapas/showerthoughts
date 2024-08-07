@@ -1,0 +1,80 @@
+{
+	"info": {
+		"_postman_id": "8fcdb66c-9b4a-4349-8421-c75a6c8db26c",
+		"name": "ShowerThoughts",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31324997"
+	},
+	"item": [
+		{
+			"name": "Journal",
+			"item": [
+				{
+					"name": "get all journal",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/journal",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"journal"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "heallth",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/ping",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"ping"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}
