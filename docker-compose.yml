@@ -1,14 +1,9 @@
-version: '3.8'
+version: '3.9'
 
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  nextapp:
+    container_name: showerthoughts-app
+    image: showerthoughts-app
+    build: .
     ports:
       - "3000:3000"
-    volumes:
-        - .:/app
-        - /app/node_modules
-        - /app/.next
-    command: yarn start
