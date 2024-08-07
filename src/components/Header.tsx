@@ -1,7 +1,4 @@
-import {
-  CircleUser,
-  Search,
-} from "lucide-react";
+import { CircleUser, Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,7 +14,7 @@ import SideNavbarMobile from "./SideNavbarMobile";
 const Header = () => {
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
-    <SideNavbarMobile />
+      <SideNavbarMobile />
       <div className="w-full flex-1">
         <form>
           <div className="relative">
@@ -47,7 +44,7 @@ const Header = () => {
         </DropdownMenuContent>
       </DropdownMenu>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

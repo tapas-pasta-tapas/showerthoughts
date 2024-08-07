@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -70,11 +64,9 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([provider, providerAccountId])
 }
@@ -83,6 +75,8 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
@@ -97,7 +91,6 @@ model VerificationToken {
   @@id([identifier, token])
 }
 
-// Optional for WebAuthn support
 model Authenticator {
   credentialID         String  @unique
   userId               String
@@ -107,8 +100,32 @@ model Authenticator {
   credentialDeviceType String
   credentialBackedUp   Boolean
   transports           String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user                 User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, credentialID])
+}
+
+model JournalEntry {
+  id         String       @id
+  title      String
+  userId     String?
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime
+  User       User?        @relation(fields: [userId], references: [id])
+  TextObject TextObject[]
+}
+
+model TextObject {
+  id             String        @id
+  sender         Sender
+  content        String
+  journalEntryId String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime
+  JournalEntry   JournalEntry? @relation(fields: [journalEntryId], references: [id])
+}
+
+enum Sender {
+  USER
+  BOT
 }
