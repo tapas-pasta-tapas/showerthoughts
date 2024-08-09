@@ -16,9 +16,6 @@ export const authOptions: AuthOptions = {
     }),
   ],
   adapter: PrismaAdapter(prisma),
-  session: {
-    strategy: "database",
-  },
   secret: process.env.NEXTAUTH_SECRET,
 };
 
