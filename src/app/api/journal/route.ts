@@ -15,7 +15,6 @@ export async function GET(req: Request) {
     const session = await getServerSession(authOptions);
 
     if (!session) {
-      console.log("error: Session not found");
       return new NextResponse(
         JSON.stringify({ message: "error: Session not found" }),
         {
@@ -31,7 +30,6 @@ export async function GET(req: Request) {
     const userId = session.user?.id;
 
     if (!userId) {
-      console.log("error: user id not found");
       return new NextResponse(
         JSON.stringify({ message: "error: user id not found" }),
         {
@@ -86,7 +84,6 @@ export async function POST(req: Request, res: Response) {
     const session = await getServerSession(authOptions);
 
     if (!session) {
-      console.log("error: Session not found");
       return new NextResponse(
         JSON.stringify({ message: "error: Session not found" }),
         {
@@ -101,7 +98,6 @@ export async function POST(req: Request, res: Response) {
     const userId = session.user?.id;
 
     if (!userId) {
-      console.log("error: user id not found");
       return new NextResponse(
         JSON.stringify({ message: "error: user id not found" }),
         {
@@ -114,7 +110,6 @@ export async function POST(req: Request, res: Response) {
     }
 
     const json = await req.json();
-    console.log("inner", json);
 
     const { title, contents } = json as CreateJournalEntryRequest;
 
@@ -160,7 +155,6 @@ export async function POST(req: Request, res: Response) {
       }
     );
   } catch (error) {
-    console.error("Internal Server Error:", error);
     return new NextResponse(
       JSON.stringify({ message: "error: Internal server error" + error }),
       {
