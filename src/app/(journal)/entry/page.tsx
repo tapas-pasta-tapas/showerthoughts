@@ -58,9 +58,9 @@ const JournalPage = () => {
 
   return (
     <div className="min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-      <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+      <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-8">
         <div className="flex items-center">
-          <h1 className="text-lg font-semibold md:text-2xl">Entry</h1>
+          <h1 className="h1">Entry</h1>
         </div>
         <Textarea value={text} onChange={handleTextChange}></Textarea>
         {loading && <div className="mt-4 text-gray-600">Loading...</div>}

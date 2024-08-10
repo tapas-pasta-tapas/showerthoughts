@@ -3,6 +3,7 @@ import { JournalEntry, Sender, TextObject } from "@/types";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { Trash2 } from "lucide-react";
+import Link from "next/link";
 
 type Props = {};
 
@@ -59,15 +60,9 @@ const page = (props: Props) => {
   };
 
   const handleDelete = async (id: string) => {
-    const response = await fetch(
-      `/api/journal?` +
-        new URLSearchParams({
-          id: id,
-        }).toString(),
-      {
-        method: "DELETE",
-      }
-    );
+    const response = await fetch(`/api/journal/${id}`, {
+      method: "DELETE",
+    });
 
     fetchJournals();
   };
@@ -82,20 +77,23 @@ const page = (props: Props) => {
 
   return (
     <div className="flex flex-col min-h-screen w-full box-border p-8 space-y-4">
-      <h1 className="font-semibold text-lg">Journals</h1>
+      <h1 className="h1">Journals</h1>
       <div className="flex flex-col space-y-4 w-full">
         {journals &&
           journals.map((journal) => (
             <div
               key={journal.id}
-              className="flex space-x-4 border border-gray-300 rounded-sm p-4 box-border"
+              className="flex space-x-4 border border-gray-300 rounded-sm p-4 box-border shadow-md hover:cursor-pointer"
             >
-              <div className="flex flex-grow flex-col">
-                <h1 className="">{journal.title}</h1>
-                <span>
+              <Link
+                className="flex flex-grow flex-col"
+                href={`/entry/${journal.id}`}
+              >
+                <h1 className="h2">{journal.title}</h1>
+                <span className="text-text-primary">
                   Content: {journal.contents[0] && journal.contents[0].content}
                 </span>
-              </div>
+              </Link>
               <button
                 onClick={() => {
                   handleDelete(journal.id);
