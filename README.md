@@ -9,7 +9,7 @@ An AI journaling app, with the key feature of a completion similar to copilot, b
 4. Access the dev build at `localhost:3000`
 
 ## Using the APIs
-API documentation can be found in the `src/api` folder
+API documentation can be found in the `app/api` folder
 
 ## Deployment on gloud
 1. Execute permissions for unix-like OS: `chmod +x ./buildndeploy.sh`

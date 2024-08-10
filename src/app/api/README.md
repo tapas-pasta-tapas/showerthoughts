@@ -12,6 +12,12 @@ returns: "pong"
 
 Returns a list of journal entries.
 
+### GET /api/journal/:id
+
+Expects: a query parameter `id` (string)
+
+Returns: The journal entry with the given id.
+
 ### POST /api/journal
 
 Expects: a JSON object with the following properties:
@@ -20,7 +26,7 @@ Expects: a JSON object with the following properties:
 
 Returns: the id of the newly created journal entry.
 
-### DELETE /api/journal?:id
+### DELETE /api/journal/:id
 
 Expects: a query parameter `id` (string)
 
