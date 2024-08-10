@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { DEFAULT_REDIRECT } from "./lib/routes";
 import { PUBLIC_ROUTES } from "./lib/routes";
+import { getSession } from "next-auth/react";
 
 export async function middleware(request: NextRequest) {
   const sessionCookie = request.cookies.get("next-auth.session-token");
+  console.log("sessionCookie", sessionCookie);
   const { nextUrl } = request;
 
   const isPublicRoute = PUBLIC_ROUTES.includes(nextUrl.pathname);
