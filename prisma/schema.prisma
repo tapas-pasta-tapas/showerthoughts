@@ -22,7 +22,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  JournalEntries JournalEntry[]
+  JournalEntries JournalEntry[] 
 }
 
 enum Sender {
@@ -34,7 +34,7 @@ model TextObject {
   id             String        @id @default(cuid())
   sender         Sender
   content        String
-  JournalEntry   JournalEntry? @relation(fields: [journalEntryId], references: [id])
+  JournalEntry   JournalEntry? @relation(fields: [journalEntryId], references: [id], onDelete: Cascade)
   journalEntryId String?
 
   createdAt DateTime @default(now())
@@ -45,7 +45,7 @@ model JournalEntry {
   id       String       @id @default(cuid())
   title    String
   contents TextObject[]
-  User     User?        @relation(fields: [userId], references: [id])
+  User     User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId   String?
 
   createdAt DateTime @default(now())

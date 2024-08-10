@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
@@ -11,7 +11,7 @@ const JournalPage = () => {
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
-  }
+  };
 
   const handleSave = async () => {
     setLoading(true);
@@ -54,8 +54,8 @@ const JournalPage = () => {
     } catch (error) {
       console.error("Failed to save the entry:", error);
     }
-  }
-  
+  };
+
   return (
     <div className="min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
@@ -64,10 +64,14 @@ const JournalPage = () => {
         </div>
         <Textarea value={text} onChange={handleTextChange}></Textarea>
         {loading && <div className="mt-4 text-gray-600">Loading...</div>}
-        {streaming && <div className="mt-4 text-gray-600">Streaming response...</div>}
-        {responseText && <div className="mt-4 p-4 bg-gray-100 rounded-md">{responseText}</div>}
+        {streaming && (
+          <div className="mt-4 text-gray-600">Streaming response...</div>
+        )}
+        {responseText && (
+          <div className="mt-4 p-4 bg-gray-100 rounded-md">{responseText}</div>
+        )}
         <Button onClick={handleSave} disabled={loading || streaming}>
-            {loading ? "Saving..." : "Save"}
+          {loading ? "Saving..." : "Save"}
         </Button>
       </main>
     </div>
