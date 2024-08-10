@@ -1,13 +1,9 @@
-import React from 'react'
+import React from "react";
 
-type Props = {
-  
-}
+type Props = {};
 
 const ListComponent = (props: Props) => {
-  return (
-    <div>ListComponent</div>
-  )
-}
+  return <div>ListComponent</div>;
+};
 
-export default ListComponent
+export default ListComponent;

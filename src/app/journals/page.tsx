@@ -1,13 +1,34 @@
-import { API_ROUTE } from "@/lib/routes";
-import React from "react";
+"use client";
+import { JournalEntry } from "@prisma/client";
+import { useSession } from "next-auth/react";
+import React, { useEffect, useState } from "react";
 
 type Props = {};
 
-const page = async (props: Props) => {
-  const { data } = await fetch(API_ROUTE + "/journal").then((res) => res.json());
-  console.log(data);
+const page = (props: Props) => {
+  const { status } = useSession();
+  const [journals, setJournals] = useState<JournalEntry[] | null>(null);
+  useEffect(() => {
+    fetch("/api/journal")
+      .then((res) => res.json())
+      .then((data) => setJournals(data.data));
+  }, []);
 
-  return <div>page</div>;
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div>
+      <h1>Journals</h1>
+      {journals &&
+        journals.map((journal) => (
+          <div key={journal.id}>
+            <h1>{journal.title}</h1>
+          </div>
+        ))}
+    </div>
+  );
 };
 
 export default page;

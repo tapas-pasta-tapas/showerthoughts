@@ -2,8 +2,8 @@ export async function POST(request: Request) {
   try {
     const { VertexAI } = require("@google-cloud/vertexai");
     const vertex_ai = new VertexAI({
-      project: 'sonorous-earth-430515-u7',
-      location: 'us-central1',
+      project: "sonorous-earth-430515-u7",
+      location: "us-central1",
     });
     const model = "gemini-1.5-flash-001";
 
@@ -80,10 +80,10 @@ Behavior Guidelines:
     // });
 
     // const response = await chat.sendMessageStream(lastMessage.parts);
-    console.log(text)
+    console.log(text);
     const req = {
-      contents: [{ role: 'user', parts: [{ text: text }] }],
-    }
+      contents: [{ role: "user", parts: [{ text: text }] }],
+    };
     const response = await generativeModel.generateContentStream(req);
     const encoder = new TextEncoder();
     const readableStream = new ReadableStream({

@@ -4,14 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { JOURNALS, ROOT } from "../lib/routes";
-import {
-  Bell,
-  Home,
-  Package2,
-  Users,
-  Book,
-  Calendar,
-} from "lucide-react";
+import { Bell, Home, Package2, Users, Book, Calendar } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 type Props = {};
@@ -54,7 +47,7 @@ const NavbarButtons = [
     href: "#",
   },
   {
-    icon:  <Book className="h-4 w-4" />,
+    icon: <Book className="h-4 w-4" />,
     title: "Entries",
     href: JOURNALS,
   },
@@ -64,7 +57,7 @@ const NavbarButtons = [
     href: "#",
   },
   {
-    icon:  <Calendar className="h-4 w-4" />,
+    icon: <Calendar className="h-4 w-4" />,
     title: "Calendar",
     href: "#",
   },
@@ -87,18 +80,16 @@ const SideNavbar = (props: Props) => {
           </div>
           <div className="flex-1 mt-2">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-              {
-                NavbarButtons.map((button) => (
-                  <Link
-                    key={button.title}
-                    href={button.href}
-                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                  >
-                    {button.icon}
-                    {button.title}
-                  </Link>
-                ))
-              }
+              {NavbarButtons.map((button) => (
+                <Link
+                  key={button.title}
+                  href={button.href}
+                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                >
+                  {button.icon}
+                  {button.title}
+                </Link>
+              ))}
             </nav>
           </div>
         </div>

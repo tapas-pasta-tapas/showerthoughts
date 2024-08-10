@@ -16,7 +16,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
   },
   adapter: PrismaAdapter(prisma),
   secret: process.env.NEXTAUTH_SECRET,
@@ -28,8 +28,8 @@ export const authOptions: NextAuthOptions = {
           user: {
             ...session.user,
             id: token.id,
-          }
-        }
+          },
+        };
       }
       return session;
     },
@@ -38,11 +38,11 @@ export const authOptions: NextAuthOptions = {
         return {
           ...token,
           id: user.id,
-        }
+        };
       }
       return token;
-    }
-  }
+    },
+  },
 };
 
 export default authOptions;
