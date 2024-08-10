@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-import { GeminiMessage } from "@/types";
 
 const JournalPage = () => {
   const [text, setText] = useState("");
