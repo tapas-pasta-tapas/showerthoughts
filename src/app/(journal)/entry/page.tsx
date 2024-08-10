@@ -51,7 +51,6 @@ const JournalPage = () => {
       }
 
       setStreaming(false);
-      // router.push("/");
     } catch (error) {
       console.error("Failed to save the entry:", error);
     }
