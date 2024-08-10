@@ -1,8 +1,6 @@
 import { API_ROUTE } from "@/lib/routes";
 import React from "react";
 
-const dynamic = "force-dynamic";
-
 type Props = {};
 
 const page = async (props: Props) => {

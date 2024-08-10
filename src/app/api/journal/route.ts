@@ -1,15 +1,12 @@
-import prisma from "@/db";
-import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth/next";
 import authOptions from "@/lib/auth";
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth/next";
+import { NextResponse } from "next/server";
+import prisma from "@/db";
 
-export async function GET(req: NextRequest, res: NextResponse) {
-  const session = await getServerSession(authOptions);
+export async function GET(req: Request) {
+  const session = await getServerSession(authOptions)
 
-  console.log(session);
-
-  if (!session || !session.user) {
+  if (!session) {
     console.log("error: Session not found");
     return new NextResponse(
       JSON.stringify({ message: "error: Session not found" }),
@@ -22,12 +19,14 @@ export async function GET(req: NextRequest, res: NextResponse) {
     );
   }
 
-  const email = session.user.email;
+  // Can ignore as we're mutating the session object to add the id
+  // @ts-ignore
+  const userId = session.user?.id ?? null;
 
-  if (!email) {
-    console.log("error: user email not found");
+  if (!userId) {
+    console.log("error: user id not found");
     return new NextResponse(
-      JSON.stringify({ message: "error: user email not found" }),
+      JSON.stringify({ message: "error: user id not found" }),
       {
         status: 401,
         headers: {
@@ -40,7 +39,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const journalEntries = await prisma.journalEntry.findMany({
     where: {
       User: {
-        email: email,
+        id: userId,
       },
     },
     include: {
