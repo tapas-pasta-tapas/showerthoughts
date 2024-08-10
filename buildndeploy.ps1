@@ -1,5 +1,5 @@
 # Load environment variables from .env file
-$envVars = Get-Content .env | Where-Object { $_ -notmatch '^#' -and $_ -notmatch '^\s*$' } | ForEach-Object { $_.Trim() }
+$envVars = Get-Content .env.production | Where-Object { $_ -notmatch '^#' -and $_ -notmatch '^\s*$' } | ForEach-Object { $_.Trim() }
 $envVarsString = ($envVars -join ',').Replace("`n", ",").Replace("`r", "")
 
 # Define variables

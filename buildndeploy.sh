@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Load environment variables from .env file
+# Load environment variables from .env.production file
 set -o allexport
-source .env
+source .env.production
 set -o allexport
 
 # Define variables
@@ -17,8 +17,8 @@ CONCURRENCY=80
 TIMEOUT=300
 SERVICE_ACCOUNT=736870137403-compute@developer.gserviceaccount.com
 
-# Construct the --set-env-vars parameter from the .env file
-ENV_VARS=$(grep -v '^#' .env | xargs | sed 's/ /,/g')
+# Construct the --set-env-vars parameter from the .env.production file
+ENV_VARS=$(grep -v '^#' .env.production | xargs | sed 's/ /,/g')
 
 # Step 1: Build the Docker image
 echo "Building Docker image..."
