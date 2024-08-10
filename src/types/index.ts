@@ -1,5 +1,5 @@
-import { Part } from "@google/generative-ai";
 import { Content } from "@google/generative-ai";
+import { DefaultSession } from "next-auth";
 
 export enum GeminiAIModel {
   PRO = "gemini-pro",
@@ -31,6 +31,26 @@ export enum Sender {
   USER = "USER",
   BOT = "BOT",
 }
+
+// Request Objects **************************************************************
+
+export type CustomSessionUser = {
+  id?: string | null;
+  email: string;
+} & DefaultSession["user"];
+
+declare module "next-auth" {
+  interface Session {
+    user?: CustomSessionUser;
+  }
+}
+
+export type CreateJournalEntryRequest = {
+  title: string;
+  contents: TextObject[];
+};
+
+// Schema Objects **************************************************************
 
 export type TextObject = {
   id: string;
