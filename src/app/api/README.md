@@ -20,9 +20,11 @@ Expects: a JSON object with the following properties:
 
 Returns: the id of the newly created journal entry.
 
-### DELETE /api/journal/:id
+### DELETE /api/journal?:id
 
-Not completed yet.
+Expects: a query parameter `id` (string)
+
+Returns: The deleted journal entry.
 
 ## Completion
 
