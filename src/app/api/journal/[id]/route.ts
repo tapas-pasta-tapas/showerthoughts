@@ -5,6 +5,15 @@ import prisma from "@/db";
 import { RequestError } from "@/types/error";
 import NewRequestError from "@/lib/error";
 
+/**
+ * Fetches a journal entry by id
+ * 400: journal entry id not provided
+ * 401: unauthorized or no user found
+ * 404: journal entry not found
+ * 500: Internal server error
+ * 200: { data: JournalEntry }
+ * @param param1 id of the journal entry to fetch
+ */
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
