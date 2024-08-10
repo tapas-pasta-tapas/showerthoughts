@@ -78,9 +78,6 @@ model Session {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model VerificationToken {
@@ -103,29 +100,4 @@ model Authenticator {
   user                 User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, credentialID])
-}
-
-model JournalEntry {
-  id         String       @id
-  title      String
-  userId     String?
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime
-  User       User?        @relation(fields: [userId], references: [id])
-  TextObject TextObject[]
-}
-
-model TextObject {
-  id             String        @id
-  sender         Sender
-  content        String
-  journalEntryId String?
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime
-  JournalEntry   JournalEntry? @relation(fields: [journalEntryId], references: [id])
-}
-
-enum Sender {
-  USER
-  BOT
 }

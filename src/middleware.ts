@@ -3,7 +3,8 @@ import { DEFAULT_REDIRECT } from "./lib/routes";
 import { PUBLIC_ROUTES } from "./lib/routes";
 
 export async function middleware(request: NextRequest) {
-  const sessionCookie = request.cookies.get("next-auth.session-token");
+  const sessionCookie = request.cookies.get("next-auth.session-token") || request.cookies.get("__Secure-next-auth.session-token");
+  console.log("sessionCookie", sessionCookie);
   const { nextUrl } = request;
 
   const isPublicRoute = PUBLIC_ROUTES.includes(nextUrl.pathname);
