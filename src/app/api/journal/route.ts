@@ -127,9 +127,9 @@ export async function POST(req: Request, res: Response) {
 
     const createContents = contents
       ? contents.map((content) => ({
-          sender: content.sender,
-          content: content.content,
-        }))
+        sender: content.sender,
+        content: content.content,
+      }))
       : [];
 
     const journalEntry = await prisma.journalEntry.create({

@@ -112,7 +112,7 @@ const JournalPage = () => {
     setLoading(true);
 
     const contents = messages.map((message) => ({
-      sender: message.role === "user" ? Sender.USER : Sender.MODEL,
+      sender: message.role === "user" ? Sender.USER : Sender.BOT,
       content: message.parts.map((part) => part.text).join(" "),
     }));
 
