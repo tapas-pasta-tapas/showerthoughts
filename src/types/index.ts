@@ -29,7 +29,7 @@ export type User = {
 
 export enum Sender {
   USER = "USER",
-  BOT = "BOT",
+  MODEL = "MODEL",
 }
 
 // Request Objects **************************************************************
