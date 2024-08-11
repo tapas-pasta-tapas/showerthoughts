@@ -111,9 +111,9 @@ const JournalPage = () => {
           <div className="mt-4 text-gray-600">Streaming response...</div>
         )}
         {responseText && (
-          <div className="mt-4 p-4 bg-gray-100 rounded-md">{responseText}</div>
+          <div className="mt-4 rounded-md bg-gray-100 p-4">{responseText}</div>
         )}
-        <div className="flex space-x-2 items-center">
+        <div className="flex items-center space-x-2">
           <Button
             className="flex flex-grow"
             onClick={handleGenerate}

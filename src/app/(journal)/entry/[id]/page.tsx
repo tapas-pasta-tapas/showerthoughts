@@ -13,7 +13,6 @@ const EntryPage = ({ params }: { params: { id: string } }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setContents(data.data.contents);
       });
   };
@@ -23,7 +22,7 @@ const EntryPage = ({ params }: { params: { id: string } }) => {
   }, []);
 
   return (
-    <div className="page-col p-8 space-y-4">
+    <div className="page-col space-y-4 p-8">
       <h1 className="h1">Entry</h1>
       <div>
         {contents &&

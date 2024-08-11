@@ -83,8 +83,6 @@ export async function DELETE(
     const id = params.id;
     const journalEntryId = id as string;
 
-    console.log(journalEntryId);
-
     if (!journalEntryId) {
       throw new RequestError(
         "error: journal entry id is required",
