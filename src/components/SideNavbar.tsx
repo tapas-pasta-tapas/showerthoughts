@@ -15,7 +15,7 @@ const SideNavbar = async (props: Props) => {
   const session = await getServerSession(authOptions);
 
   return (
-    <div className="box-border flex h-screen max-w-[200px] flex-col justify-between border-r border-r-gray-300 bg-muted/40">
+    <div className="box-border hidden h-screen max-w-[200px] flex-col justify-between border-r border-r-gray-300 bg-muted/40 md:flex">
       <div className="flex h-full max-h-screen flex-col">
         <div className="flex h-14 items-center space-x-2 border-b px-4 lg:h-[60px]">
           <Link href={ROOT} className="flex items-center gap-2 font-semibold">
