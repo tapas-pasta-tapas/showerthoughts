@@ -39,7 +39,6 @@ Behavior Guidelines:
     - Do not repeat the user's input verbatim, and do not give redundant suggestions.
     - Focus on adding value to the conversation by bringing new perspectives or deepening the reflection.`;
 
-
     // const vertexAIRetrievalTool = {
     //   retrieval: {
     //     vertexAiSearch: {
