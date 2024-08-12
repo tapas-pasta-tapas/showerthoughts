@@ -2,7 +2,7 @@ import authOptions from "@/lib/auth";
 import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
 import prisma from "@/db";
-import { CreateJournalEntryRequest } from "@/types";
+import { CreateJournalEntryRequest, GeminiMessage } from "@/types";
 
 /**
  * Fetch all of the user's journal entries
@@ -26,7 +26,6 @@ export async function GET(req: Request) {
       );
     }
 
-    // Can ignore as we're mutating the session object to add the id
     const userId = session.user?.id;
 
     if (!userId) {
@@ -48,12 +47,25 @@ export async function GET(req: Request) {
         },
       },
       include: {
-        User: true,
-        contents: true,
+        User: true, // Include user data if necessary
+        messages: true, // Include the conversation history
+      },
+      orderBy: {
+        createdAt: 'desc', // Optional: order by creation date
       },
     });
 
-    return new NextResponse(JSON.stringify({ data: journalEntries }), {
+    // Transforming the data to include the full journal content and conversation history
+    const transformedEntries = journalEntries.map(entry => ({
+      id: entry.id,
+      title: entry.title,
+      content: entry.content, // The full journal content
+      messages: entry.messages, // The conversation history
+      createdAt: entry.createdAt,
+      updatedAt: entry.updatedAt,
+    }));
+
+    return new NextResponse(JSON.stringify({ data: transformedEntries }), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
@@ -71,7 +83,6 @@ export async function GET(req: Request) {
     );
   }
 }
-
 /**
  * Takes in a body JSON a type of CreateJournalEntryRequest and will return the created journal entry id
  * 400: title or contents params not found, or contents array is empty
@@ -79,7 +90,7 @@ export async function GET(req: Request) {
  * 500: Internal server error
  * 201: Successfully created with returns { journalEntryId: string }
  */
-export async function POST(req: Request, res: Response) {
+export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions);
 
@@ -109,13 +120,33 @@ export async function POST(req: Request, res: Response) {
       );
     }
 
-    const json = await req.json();
+    // Check if the user exists
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
 
-    const { title, contents } = json as CreateJournalEntryRequest;
-
-    if (!title || !contents || contents.length === 0) {
+    if (!user) {
       return new NextResponse(
-        JSON.stringify({ message: "error: title or contents not found" }),
+        JSON.stringify({ message: "error: user not found" }),
+        {
+          status: 404,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+
+    const json = await req.json();
+    const { title, content, messages } = json as {
+      title: string;
+      content: string;
+      messages: GeminiMessage[];
+    };
+
+    if (!title || !content) {
+      return new NextResponse(
+        JSON.stringify({ message: "error: title or content not found" }),
         {
           status: 400,
           headers: {
@@ -125,23 +156,22 @@ export async function POST(req: Request, res: Response) {
       );
     }
 
-    const createContents = contents
-      ? contents.map((content) => ({
-        sender: content.sender,
-        content: content.content,
-      }))
-      : [];
+    console.log("Creating Journal Entry with:", { title, content, messages }); // Debugging line
 
     const journalEntry = await prisma.journalEntry.create({
       data: {
         title,
+        content,
         User: { connect: { id: userId } },
-        contents: {
-          create: createContents,
+        messages: {
+          create: messages.map((message) => ({
+            role: message.role,
+            parts: JSON.stringify(message.parts), // Storing parts as a JSON string
+          })),
         },
       },
       include: {
-        contents: true, // Include the associated text objects
+        messages: true,
       },
     });
 
@@ -155,8 +185,9 @@ export async function POST(req: Request, res: Response) {
       }
     );
   } catch (error) {
+    console.error("Failed to create journal entry:", error); // Improved error logging
     return new NextResponse(
-      JSON.stringify({ message: "error: Internal server error" + error }),
+      JSON.stringify({ message: `error: Internal server error - ${(error as Error).message}` }),
       {
         status: 500,
         headers: {

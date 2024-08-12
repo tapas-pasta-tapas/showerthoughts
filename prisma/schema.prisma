@@ -30,23 +30,24 @@ enum Sender {
   BOT
 }
 
-model TextObject {
-  id             String        @id @default(cuid())
-  sender         Sender
-  content        String
-  JournalEntry   JournalEntry? @relation(fields: [journalEntryId], references: [id], onDelete: Cascade)
-  journalEntryId String?
+model JournalEntry {
+  id       String       @id @default(cuid())
+  title    String
+  content  String       // This field stores the entire content of the journal entry
+  messages GeminiMessage[]
+  User     User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model JournalEntry {
-  id       String       @id @default(cuid())
-  title    String
-  contents TextObject[]
-  User     User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId   String?
+model GeminiMessage {
+  id             String          @id @default(cuid())
+  role           String          // Role of the message, e.g., "user" or "model"
+  parts          Json            // Array of message parts, stored as JSON
+  journalEntry   JournalEntry?   @relation(fields: [journalEntryId], references: [id], onDelete: Cascade)
+  journalEntryId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
