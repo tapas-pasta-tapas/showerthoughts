@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
 import React, { useRef, useEffect, SyntheticEvent, KeyboardEvent } from "react";
 import assert from "assert";
 import { v4 as uuidv4 } from "uuid";
-import { LRUCache } from 'lru-cache';
+import { LRUCache } from "lru-cache";
 import Suggestion, { suggestionIdAttribute } from "./Suggestion";
 import {
   isCaretAtLineEnd,
@@ -112,7 +112,9 @@ export default function AutocompleteTextbox({
     );
     if (!suggestionElements) return;
     suggestionElements.forEach((suggestionElement) => {
-      const suggestionId = suggestionElement.getAttribute(suggestionIdAttribute)!;
+      const suggestionId = suggestionElement.getAttribute(
+        suggestionIdAttribute
+      )!;
       suggestionElement.remove();
       if (reason !== SuggestionRemovalReason.SYSTEM) {
         onSuggestionRejected?.({

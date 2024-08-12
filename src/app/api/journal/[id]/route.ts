@@ -63,7 +63,6 @@ export async function GET(
   }
 }
 
-
 /**
  * Deletes a journal entry by id, after checking if that id belongs to the user
  * 400: journal entry id is required

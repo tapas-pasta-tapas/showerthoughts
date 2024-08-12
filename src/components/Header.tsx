@@ -11,7 +11,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import SideNavbarMobile from "./SideNavbarMobile";
-const Header = () => {
+import { getServerSession } from "next-auth";
+import authOptions from "@/lib/auth";
+import { signIn, signOut } from "next-auth/react";
+import AuthButton from "./AuthButton";
+
+const Header = async () => {
+  const session = await getServerSession(authOptions);
+
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
       <SideNavbarMobile />
@@ -35,12 +42,16 @@ const Header = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Settings</DropdownMenuItem>
-          <DropdownMenuItem>Support</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Logout</DropdownMenuItem>
+          {session && (
+            <>
+              <DropdownMenuLabel>{session?.user?.name}</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuItem>Support</DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </>
+          )}
+          <AuthButton session={session} />
         </DropdownMenuContent>
       </DropdownMenu>
     </header>

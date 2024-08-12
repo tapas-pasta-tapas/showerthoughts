@@ -51,12 +51,12 @@ export async function GET(req: Request) {
         messages: true, // Include the conversation history
       },
       orderBy: {
-        createdAt: 'desc', // Optional: order by creation date
+        createdAt: "desc", // Optional: order by creation date
       },
     });
 
     // Transforming the data to include the full journal content and conversation history
-    const transformedEntries = journalEntries.map(entry => ({
+    const transformedEntries = journalEntries.map((entry) => ({
       id: entry.id,
       title: entry.title,
       content: entry.content, // The full journal content
@@ -187,7 +187,9 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error("Failed to create journal entry:", error); // Improved error logging
     return new NextResponse(
-      JSON.stringify({ message: `error: Internal server error - ${(error as Error).message}` }),
+      JSON.stringify({
+        message: `error: Internal server error - ${(error as Error).message}`,
+      }),
       {
         status: 500,
         headers: {

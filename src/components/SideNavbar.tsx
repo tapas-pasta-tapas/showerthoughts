@@ -30,7 +30,6 @@ const SideNavbar = async (props: Props) => {
           <EntryList />
         </div>
       </div>
-      <AuthButton session={session} />
     </div>
   );
 };
