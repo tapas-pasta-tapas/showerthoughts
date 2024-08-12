@@ -135,3 +135,80 @@ export async function DELETE(
     return NewRequestError(error);
   }
 }
+
+/**
+ * Updates a journal entry's content by id
+ * 400: journal entry id or content not provided
+ * 401: unauthorized or no user found
+ * 404: journal entry not found
+ * 500: Internal server error
+ * 200: { message: "success: journal entry updated" }
+ */
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const journalEntryId = params.id;
+
+    if (!journalEntryId) {
+      return NextResponse.json(
+        { message: "error: journal entry id is required" },
+        { status: 400 }
+      );
+    }
+
+    const session = await getServerSession(authOptions);
+
+    if (!session || !session.user || !session.user.id) {
+      return NextResponse.json(
+        { message: "error: unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    const userId = session.user.id;
+
+    const json = await req.json();
+    const { content } = json as { content: string };
+
+    if (!content) {
+      return NextResponse.json(
+        { message: "error: content is required" },
+        { status: 400 }
+      );
+    }
+
+    // Check if the journal entry exists and belongs to the user
+    const existingJournalEntry = await prisma.journalEntry.findFirst({
+      where: {
+        id: journalEntryId,
+        userId: userId,
+      },
+    });
+
+    if (!existingJournalEntry) {
+      return NextResponse.json(
+        { message: "error: journal entry not found" },
+        { status: 404 }
+      );
+    }
+
+    // Update the journal entry content
+    await prisma.journalEntry.update({
+      where: { id: journalEntryId },
+      data: { content },
+    });
+
+    return NextResponse.json(
+      { message: "success: journal entry updated" },
+      { status: 200 }
+    );
+  } catch (error: any) {
+    console.error("Error updating journal entry:", error);
+    return NextResponse.json(
+      { message: "error: Internal server error" },
+      { status: 500 }
+    );
+  }
+}
