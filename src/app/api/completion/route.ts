@@ -1,15 +1,18 @@
+import { Content } from "@google/generative-ai";
+import { GeminiMessage } from "@/types";
+
 export async function POST(request: Request) {
   try {
     const { VertexAI } = require("@google-cloud/vertexai");
     const vertex_ai = new VertexAI({
-      project: 'sonorous-earth-430515-u7',
-      location: 'us-central1',
+      project: "sonorous-earth-430515-u7",
+      location: "us-central1",
     });
     const model = "gemini-1.5-flash-001";
 
     const json = await request.json();
-    const { text } = json as {
-      text: string;
+    const { messages } = json as {
+      messages: Content[];
     };
 
     const sysInstruction = `
@@ -29,7 +32,13 @@ Behavior Guidelines:
 
 3. Encouraging Depth and Insight
    - Ask open-ended, reflective questions that encourage deeper thinking.
-   - Help the user explore their feelings, thoughts, and experiences further.`;
+   - Help the user explore their feelings, thoughts, and experiences further.
+
+4. Avoid repetition.
+    - Do not repeat your own questions or responses, by checking against your previous messages.
+    - Do not repeat the user's input verbatim, and do not give redundant suggestions.
+    - Focus on adding value to the conversation by bringing new perspectives or deepening the reflection.`;
+
 
     // const vertexAIRetrievalTool = {
     //   retrieval: {
@@ -80,11 +89,18 @@ Behavior Guidelines:
     // });
 
     // const response = await chat.sendMessageStream(lastMessage.parts);
-    console.log(text)
-    const req = {
-      contents: [{ role: 'user', parts: [{ text: text }] }],
-    }
-    const response = await generativeModel.generateContentStream(req);
+    // console.log(text);
+    // const req = {
+    //   contents: [{ role: "user", parts: [{ text: text }] }],
+    // };
+    // const response = await generativeModel.generateContentStream(req);
+    const lastMessage = messages.pop() as GeminiMessage;
+
+    const chat = generativeModel.startChat({
+      history: messages,
+    });
+
+    const response = await chat.sendMessageStream(lastMessage.parts);
     const encoder = new TextEncoder();
     const readableStream = new ReadableStream({
       async start(controller) {

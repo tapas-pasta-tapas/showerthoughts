@@ -67,3 +67,27 @@
     @apply bg-background text-foreground;
   }
 }
+
+.page-col {
+  @apply flex flex-col min-h-screen w-full;
+}
+
+.page-row {
+  @apply flex flex-row min-h-screen w-full;
+}
+
+.h1 {
+  @apply font-semibold text-primary text-3xl;
+}
+
+.h2 {
+  @apply font-medium text-primary text-xl;
+}
+
+.h3 {
+  @apply font-normal text-primary text-lg;
+}
+
+.text-text-primary {
+  @apply text-base text-slate-700;
+}

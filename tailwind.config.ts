@@ -72,6 +72,13 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      spacing: {
+        '0.1': '0.025rem', // Add a custom spacing value
+        '0.2': '0.05rem', // Add a custom spacing value
+        '2.3': '0.575rem', // Add a custom spacing value
+        '2.6': '0.65rem', // Add a custom spacing value
+        '3.1': '0.775rem', // Add a custom spacing value
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
