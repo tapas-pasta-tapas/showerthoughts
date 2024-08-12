@@ -1,6 +1,7 @@
 import { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/db";
 
@@ -13,6 +14,21 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+    }),
+    CredentialsProvider({
+      name: "credentials",
+      credentials: {
+        email: {
+          label: "Email",
+          type: "email",
+          placeholder: "hello@example.com",
+        },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials, req) {
+        const user = { id: "1", name: "Test", email: "test@test.com" };
+        return user;
+      },
     }),
   ],
   session: {
@@ -42,6 +58,10 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
+  },
+  pages: {
+    // signIn: "/auth/login",
+    // newUser: "/auth/register",
   },
 };
 
