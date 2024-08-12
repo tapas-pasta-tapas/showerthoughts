@@ -1,8 +1,7 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Sender, GeminiMessage } from "@/types";
+import { GeminiMessage } from "@/types";
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 
@@ -35,7 +34,8 @@ const JournalPage = () => {
     // Set new debounce timeout
     debounceTimeout.current = setTimeout(() => {
       handleGenerate(); // Call the function to generate AI response after 3 seconds of inactivity
-    }, 3000);
+      handleSave(); // Save changes after a period of inactivity
+    }, 1000); // Save after 1 second of inactivity
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -110,17 +110,19 @@ const JournalPage = () => {
       console.error("No content to save");
       return;
     }
-  
+
+    if (loading) {
+      return; // Prevent save if already loading
+    }
+
     setLoading(true);
-  
+
     const journalEntry = {
       title: journalTitle === "" ? "My Journal" : journalTitle, // Can be dynamically set based on user input
       content: text, // Store the entire journal entry text
       messages: messages, // Store the conversation history
     };
-  
-    console.log("Saving Journal Entry:", journalEntry); // Debugging line
-  
+
     try {
       const response = await fetch("/api/journal", {
         method: "POST",
@@ -129,30 +131,27 @@ const JournalPage = () => {
         },
         body: JSON.stringify(journalEntry),
       });
-  
+
       if (!response.ok) {
         const errorText = await response.text(); // Get error details from the server
         setLoading(false);
         console.error("Failed to save the entry:", errorText);
         throw new Error(`Failed to save the entry: ${errorText}`);
       }
-  
+
+      const responseData = await response.json();
+      const journalEntryId = responseData.journalEntryId;
+
       setLoading(false);
-      router.push("/journals");
+
+      // Redirect to the newly created journal entry's edit page
+      router.push(`/entry/${journalEntryId}`); // Use replace instead of push for soft redirect
     } catch (error) {
       console.error("Failed to save the entry:", error);
       setLoading(false);
     }
   };
-  
 
-  // Auto-save whenever the user stops typing for a set duration
-  useEffect(() => {
-    if (text.trim() !== "") {
-      handleSave();
-    }
-  }, [text]); // Save when `text` changes
-  
   return (
     <div className="relative min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <main className="relative flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
@@ -191,11 +190,6 @@ const JournalPage = () => {
             {/* Display the response text */}
           </div>
         </div>
-        {/* <div className="flex justify-end">
-          <Button className="w-full md:w-auto" onClick={handleSave} disabled={loading}>
-            {loading ? "Saving..." : "Save"}
-          </Button>
-        </div> */}
       </main>
     </div>
   );
