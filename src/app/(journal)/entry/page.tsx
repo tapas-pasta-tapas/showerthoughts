@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Sender, GeminiMessage } from "@/types";
 import { useRouter } from "next/navigation";
@@ -14,6 +15,7 @@ const JournalPage = () => {
   const [responseText, setResponseText] = useState<string>(""); // State for the response text
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
+  const [journalTitle, setJournalTitle] = useState<string>("");
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -112,7 +114,7 @@ const JournalPage = () => {
     setLoading(true);
   
     const journalEntry = {
-      title: "My journal", // Can be dynamically set based on user input
+      title: journalTitle === "" ? "My Journal" : journalTitle, // Can be dynamically set based on user input
       content: text, // Store the entire journal entry text
       messages: messages, // Store the conversation history
     };
@@ -152,28 +154,41 @@ const JournalPage = () => {
   }, [text]); // Save when `text` changes
   
   return (
-    <div className="min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr] relative">
-      <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 relative">
+    <div className="relative min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+      <main className="relative flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
         <div className="flex items-center">
           <h1 className="text-lg font-semibold md:text-2xl">Entry</h1>
         </div>
-
+        <div className="flex flex-col space-y-2">
+          <Input
+            placeholder="Journal title"
+            value={journalTitle}
+            onChange={(e) => {
+              if (e.target.value.length > 50) return;
+              setJournalTitle(e.target.value);
+            }}
+          />
+          <span className="text-sm text-gray-400">
+            {journalTitle.length}/50
+          </span>
+        </div>
         <div className="relative">
           <Textarea
             ref={textareaRef}
             value={text}
             onChange={handleTextChange}
             onKeyDown={handleKeyDown}
-            className="relative z-10 bg-transparent min-h-96 resize-none border-transparent border-none outline-none"
+            className="relative z-10 min-h-96 resize-none border-none border-transparent bg-transparent outline-none"
             style={{ color: "black" }}
           />
           <div
-            className="absolute text-md top-2 left-0 pointer-events-none z-0 whitespace-pre-wrap"
+            className="text-md pointer-events-none absolute left-0 top-2 z-0 whitespace-pre-wrap"
             style={{ color: "transparent" }}
           >
             {text}
             {loading && <span className="text-gray-400">⌛</span>}
-            <span className="text-gray-400">{responseText}</span> {/* Display the response text */}
+            <span className="text-gray-400">{responseText}</span>{" "}
+            {/* Display the response text */}
           </div>
         </div>
         {/* <div className="flex justify-end">
