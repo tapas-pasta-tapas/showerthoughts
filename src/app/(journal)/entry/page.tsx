@@ -108,28 +108,33 @@ const JournalPage = () => {
       console.error("No content to save");
       return;
     }
-
+  
     setLoading(true);
-
-    const contents = messages.map((message) => ({
-      sender: message.role === "user" ? Sender.USER : Sender.MODEL,
-      content: message.parts.map((part) => part.text).join(" "),
-    }));
-
+  
+    const journalEntry = {
+      title: "My journal", // Can be dynamically set based on user input
+      content: text, // Store the entire journal entry text
+      messages: messages, // Store the conversation history
+    };
+  
+    console.log("Saving Journal Entry:", journalEntry); // Debugging line
+  
     try {
       const response = await fetch("/api/journal", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title: "My journal", contents: contents }),
+        body: JSON.stringify(journalEntry),
       });
-
+  
       if (!response.ok) {
+        const errorText = await response.text(); // Get error details from the server
         setLoading(false);
-        throw new Error("Failed to save the entry");
+        console.error("Failed to save the entry:", errorText);
+        throw new Error(`Failed to save the entry: ${errorText}`);
       }
-
+  
       setLoading(false);
       router.push("/journals");
     } catch (error) {
@@ -137,7 +142,15 @@ const JournalPage = () => {
       setLoading(false);
     }
   };
+  
 
+  // Auto-save whenever the user stops typing for a set duration
+  useEffect(() => {
+    if (text.trim() !== "") {
+      handleSave();
+    }
+  }, [text]); // Save when `text` changes
+  
   return (
     <div className="min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr] relative">
       <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 relative">

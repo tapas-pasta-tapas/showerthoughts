@@ -19,21 +19,22 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const id = params.id;
-    const journalEntryId = id as string;
+    const journalEntryId = params.id;
 
     if (!journalEntryId) {
-      throw new RequestError(
-        "error: journal entry id is required",
-        400,
-        "application/json"
+      return NextResponse.json(
+        { message: "error: journal entry id is required" },
+        { status: 400 }
       );
     }
 
     const session = await getServerSession(authOptions);
 
     if (!session || !session.user || !session.user.id) {
-      throw new RequestError("error: unauthorized", 401, "application/json");
+      return NextResponse.json(
+        { message: "error: unauthorized" },
+        { status: 401 }
+      );
     }
 
     const userId = session.user.id;
@@ -44,28 +45,24 @@ export async function GET(
         userId: userId,
       },
       include: {
-        contents: true,
+        messages: true, // Assuming you want to include messages or any other relations here
       },
     });
 
     if (!journalEntry) {
-      throw new RequestError(
-        "error: journal entry not found",
-        404,
-        "application/json"
+      return NextResponse.json(
+        { message: "error: journal entry not found" },
+        { status: 404 }
       );
     }
 
-    return new NextResponse(JSON.stringify({ data: journalEntry }), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return NextResponse.json({ data: journalEntry }, { status: 200 });
   } catch (error: any) {
+    console.error("Error fetching journal entry:", error);
     return NewRequestError(error);
   }
 }
+
 
 /**
  * Deletes a journal entry by id, after checking if that id belongs to the user
